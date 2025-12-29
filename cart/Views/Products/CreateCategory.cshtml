@@ -1,0 +1,18 @@
+﻿@model cart.Models.Category
+
+@{
+    ViewData["Title"] = "CreateCategory";
+}
+
+<h1>Create Category</h1>
+
+<form asp-action="CreateCategory" method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+<a asp-action="Index">Back to list</a>
