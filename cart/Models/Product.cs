@@ -15,7 +15,7 @@ namespace cart.Models
         public string Content { get; set; }         //商品內容
         public int Price { get; set; }              //商品價格
         public int Stock { get; set; }              //商品庫存
-        public byte[] Image { get; set; }           //商品圖片
+        public byte[]? Image { get; set; }           //商品圖片
 
         public int CategoryId { get; set; }         //類別 (Foreign Key)
     }

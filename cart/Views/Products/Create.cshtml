@@ -26,7 +26,7 @@
 
             <div class="form-group">
                 <label asp-for="Content"></label>
-                <textarea asp-for="Content" class="form-control"></textarea>
+                <textarea asp-for="Content" id="editor" class="form-control"></textarea>
             </div>
 
             <div class="form-group">
@@ -54,6 +54,11 @@
                         class="form-control">
                 </select>
             </div>
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">
+                    Create
+                </button>
+            </div>
 
 
         </form>
@@ -74,5 +79,12 @@
             const objectURL = URL.createObjectURL(file);    // 使用 createObjectURL 產生圖片url
             $('#preview').attr('src', objectURL);
         });
+    </script>
+
+    <script>
+        // CKEditor 初始化（只針對 Content）
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => console.error(error));
     </script>
 }

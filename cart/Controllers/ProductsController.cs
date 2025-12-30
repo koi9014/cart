@@ -44,27 +44,13 @@ namespace cart.Controllers
         }
 
         // GET: Products/Create
+        [HttpGet]
         public IActionResult Create()
         {
             ViewData["Categories"] = new SelectList(_context.Set<Category>(), "Id", "Name");
             return View();
         }
 
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price")] Product product)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(product);
-        }
 
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -87,12 +73,14 @@ namespace cart.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price")] Product product)
+        public async Task<IActionResult> Edit(int id, Product product)
         {
             if (id != product.Id)
             {
                 return NotFound();
             }
+            ModelState.Remove("Image");
+
 
             if (ModelState.IsValid)
             {
@@ -161,19 +149,7 @@ namespace cart.Controllers
         }
 
         // POST: Products/CreateCategory
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateCategory(Category category)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Category.Add(category);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
 
-            return View(category);
-        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -199,3 +175,5 @@ namespace cart.Controllers
         }
     }
 }
+
+// git test 123
