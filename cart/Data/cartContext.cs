@@ -14,8 +14,8 @@ namespace cart.Data
         {
         }
 
-        public DbSet<cart.Models.Product> Product { get; set; } = default!;
-        public DbSet<cart.Models.Category> Category { get; set; } = default!;
+        public DbSet<Product> Product { get; set; }
+        public DbSet<Category> Category { get; set; }
 
     }
 }

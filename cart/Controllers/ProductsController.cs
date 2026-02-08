@@ -20,36 +20,29 @@ namespace cart.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? categoryId)
         {
-            return View(await _context.Product.ToListAsync());
+            ViewBag.Categories = await _context.Category.ToListAsync();
+            ViewBag.SelectedCategoryId = categoryId;
+
+            var products = _context.Product.Include(p => p.Category).AsQueryable();
+
+            if (categoryId.HasValue)
+                products = products.Where(p => p.CategoryId == categoryId.Value);
+
+            return View(await products.ToListAsync());
         }
 
-        // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Product
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
-        }
 
         // GET: Products/Create
         [HttpGet]
         public IActionResult Create()
         {
-            ViewData["Categories"] = new SelectList(_context.Set<Category>(), "Id", "Name");
+            // 把分類傳到 View
+            ViewBag.Categories = new SelectList(_context.Category, "Id", "Name");
             return View();
         }
+
 
 
         // GET: Products/Edit/5
@@ -153,27 +146,21 @@ namespace cart.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Product product, IFormFile myimg)
+        public async Task<IActionResult> Create(Product product)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                if (myimg != null)
-                {
-                    using (var ms = new MemoryStream())
-                    {
-                        myimg.CopyTo(ms);
-                        product.Image = ms.ToArray();
-                    }
-                }
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // 如果驗證失敗，重新塞下拉選單
+                ViewBag.Categories = new SelectList(_context.Category, "Id", "Name", product.CategoryId);
+                return View(product);
             }
-            ViewData["Categories"] = new SelectList(
-                _context.Set<Category>(), "Id", "Name", product.CategoryId);
-            return View(product);
+
+            // 新增商品
+            _context.Add(product);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
 
-// git test 123

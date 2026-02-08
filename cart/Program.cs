@@ -1,7 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using cart.Data;
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    ContentRootPath = Directory.GetCurrentDirectory(),
+    WebRootPath = "wwwroot",
+    Args = args
+}); 
 builder.Services.AddDbContext<cartContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("cartContext") ?? throw new InvalidOperationException("Connection string 'cartContext' not found.")));
 
